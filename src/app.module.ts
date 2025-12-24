@@ -1,26 +1,18 @@
 import { Module } from "@nestjs/common";
-import { ConfigModule, ConfigService } from "@nestjs/config";
+import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { CartModule } from "@infra/ioc/cart.module";
 
 @Module({
   imports: [
-    // Carrega o .env
-    ConfigModule.forRoot({
-      isGlobal: true,
+    ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forRoot({
+      type: "mongodb",
+      url: process.env.MONGO_URL || "mongodb://localhost:27017/soat_cart",
+      synchronize: true,
+      autoLoadEntities: true,
     }),
-    // Configuração do MongoDB
-    TypeOrmModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        type: "mongodb",
-        url: config.get<string>(
-          "MONGO_URL",
-          "mongodb://localhost:27017/soat_cart"
-        ),
-        autoLoadEntities: true,
-        synchronize: true, // Apenas para Lab/Dev
-      }),
-    }),
+    CartModule,
   ],
 })
 export class AppModule {}

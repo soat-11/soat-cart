@@ -12,7 +12,14 @@ O projeto segue a rigorosa separação de interesses para garantir testabilidade
 
 ## 🛠 Tecnologias e Versões
 
-**TecnologiaVersãoDescriçãoNode.js**v22.12.0Runtime (LTS)**NestJS**11.xFramework Principal**MongoDB**latestBanco de Dados NoSQL**TypeScript**5.7.xLinguagem**OpenTelemetry**latestRastreamento e Observabilidade**Stryker**8.xTestes de Mutação
+| Tecnologia        | Versão     | Descrição                      |
+| :---------------- | :--------- | :----------------------------- |
+| **Node.js**       | `v22.12.0` | Runtime (LTS)                  |
+| **NestJS**        | `11.x`     | Framework Principal            |
+| **MongoDB**       | `latest`   | Banco de Dados NoSQL           |
+| **TypeScript**    | `5.7.x`    | Linguagem                      |
+| **OpenTelemetry** | `latest`   | Rastreamento e Observabilidade |
+| **Stryker**       | `8.x`      | Testes de Mutação              |
 
 ## 🚀 Como Executar o Projeto
 

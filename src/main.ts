@@ -3,12 +3,21 @@ import { ValidationPipe } from "@nestjs/common";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { apiReference } from "@scalar/nestjs-api-reference";
 import { AppModule } from "./app.module";
+import { AllExceptionsFilter } from "@infra/http/filters/http-exception.filter";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // Validação global (usa class-validator e class-transformer)
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    })
+  );
+
+  app.useGlobalFilters(new AllExceptionsFilter());
 
   // Configuração do Swagger
   const config = new DocumentBuilder()
@@ -31,4 +40,5 @@ async function bootstrap() {
   await app.listen(port);
   console.log(`🚀 Service is running on: http://localhost:${port}/reference`);
 }
+
 bootstrap();
