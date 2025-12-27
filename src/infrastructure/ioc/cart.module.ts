@@ -5,12 +5,16 @@ import { CartMongoRepository } from "@infra/persistence/repositories/cart.mongo.
 import { ProductMongoRepository } from "@infra/persistence/repositories/product.mongo.repository";
 import { CartController } from "@infra/http/controllers/cart.controller";
 import { AddItemToCartUseCase } from "@core/use-cases/add-item-to-cart.use-case";
+import { GetCartUseCase } from "@core/use-cases/get-cart.use-case.ts";
+import { RemoveItemFromCartUseCase } from "@core/use-cases/remove-item-from-cart.use-case";
 
 @Module({
   imports: [TypeOrmModule.forFeature([CartSchema])],
   controllers: [CartController],
   providers: [
     AddItemToCartUseCase,
+    GetCartUseCase,
+    RemoveItemFromCartUseCase,
 
     {
       provide: "ICartRepository",
@@ -21,6 +25,6 @@ import { AddItemToCartUseCase } from "@core/use-cases/add-item-to-cart.use-case"
       useClass: ProductMongoRepository,
     },
   ],
-  exports: [AddItemToCartUseCase],
+  exports: [AddItemToCartUseCase, GetCartUseCase, RemoveItemFromCartUseCase],
 })
 export class CartModule {}

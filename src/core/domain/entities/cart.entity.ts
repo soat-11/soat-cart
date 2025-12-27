@@ -51,6 +51,7 @@ export class Cart {
     if (index === -1) {
       throw new Error("Item não encontrado no carrinho");
     }
+
     this.items.splice(index, 1);
   }
 }

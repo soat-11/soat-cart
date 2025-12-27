@@ -24,14 +24,12 @@ export class AddItemToCartUseCase {
       return Result.fail("Sessão inválida ou ausente");
     }
 
-    // 1. Valida se o produto existe no catálogo (Mock ou DB)
     const productValidation = await this.productRepository.findById(dto.sku);
 
     if (productValidation.isFailure || !productValidation.getValue()) {
       return Result.fail(`Produto ${dto.sku} não existe`);
     }
 
-    // 2. Busca o carrinho no Mongo ou inicia um novo se não existir
     let cart = await this.cartRepository.findBySessionId(sessionId);
 
     if (!cart) {
@@ -39,16 +37,13 @@ export class AddItemToCartUseCase {
     }
 
     try {
-      // 3. Adiciona ou atualiza o item usando a lógica da Entidade
       const item = new CartItem(dto.sku, dto.quantity, dto.unitPrice || 0);
       cart.addOrUpdateItem(item);
 
-      // 4. Persiste no MongoDB (o método save lida com insert/update)
       await this.cartRepository.save(cart);
 
       const totals = cart.getTotal();
 
-      // 5. Retorna o DTO de saída mapeado
       return Result.ok({
         sessionId: cart.sessionId,
         items: cart.getItems().map((i) => ({
@@ -63,6 +58,7 @@ export class AddItemToCartUseCase {
       if (error instanceof Error) {
         return Result.fail(error.message);
       }
+
       return Result.fail("Erro desconhecido ao adicionar item ao carrinho");
     }
   }
