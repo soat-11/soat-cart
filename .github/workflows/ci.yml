@@ -85,5 +85,5 @@ jobs:
         run: |
           IMAGE_URI=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY_NAME }}:${{ env.IMAGE_TAG }}
           kubectl get deployments -A
-          kubectl set image deployment/cart cart="$IMAGE_URI"
-          kubectl rollout status deployment/cart
+          kubectl set image deployment/cart-deployment cart="$IMAGE_URI"
+          kubectl rollout status deployment/cart-deployment
