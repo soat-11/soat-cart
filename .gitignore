@@ -1,5 +1,6 @@
 # Nestjs specific
 /dist
+/coverage
 /node_modules
 /build
 /tmp
@@ -22,3 +23,6 @@ lerna-debug.log*
 # temp directory
 .temp
 .tmp
+
+*.log
+.DS_Store
