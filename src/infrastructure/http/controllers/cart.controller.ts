@@ -46,7 +46,7 @@ export class CartController {
   @Patch("items")
   @ApiOperation({ summary: "Adicionar ou atualizar item no carrinho" })
   @ApiHeader({
-    name: "session-id",
+    name: "x-session-id",
     required: true,
     description: "ID da sessão do cliente (UUID)",
   })
@@ -133,7 +133,7 @@ export class CartController {
   @Get()
   @ApiOperation({ summary: "Buscar o carrinho atual do cliente" })
   @ApiHeader({
-    name: "session-id",
+    name: "x-session-id",
     required: true,
     description: "ID da sessão do cliente",
   })
@@ -195,7 +195,7 @@ export class CartController {
   @Delete("items/:sku")
   @ApiOperation({ summary: "Remover item específico do carrinho" })
   @ApiHeader({
-    name: "session-id",
+    name: "x-session-id",
     required: true,
     description: "ID da sessão do cliente",
   })

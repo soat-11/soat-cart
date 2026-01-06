@@ -3,7 +3,6 @@ import { Result } from "@shared/result";
 import { CartOutputDto } from "@infra/http/dtos/cart-output.dto";
 import { AddItemToCartDto } from "@infra/http/dtos/add-item-to-cart.dto";
 import { ICartRepository } from "@core/domain/repositories/cart.repository.interface";
-import { IProductRepository } from "@infra/persistence/repositories/product.mongo.repository";
 import { Cart } from "@core/domain/entities/cart.entity";
 import { CartItem } from "@core/domain/entities/cart-item.entity";
 
@@ -11,9 +10,7 @@ import { CartItem } from "@core/domain/entities/cart-item.entity";
 export class AddItemToCartUseCase {
   constructor(
     @Inject("ICartRepository")
-    private readonly cartRepository: ICartRepository,
-    @Inject("IProductRepository")
-    private readonly productRepository: IProductRepository
+    private readonly cartRepository: ICartRepository
   ) {}
 
   public async execute(
@@ -22,12 +19,6 @@ export class AddItemToCartUseCase {
   ): Promise<Result<CartOutputDto>> {
     if (!sessionId) {
       return Result.fail("Sessão inválida ou ausente");
-    }
-
-    const productValidation = await this.productRepository.findById(dto.sku);
-
-    if (productValidation.isFailure || !productValidation.getValue()) {
-      return Result.fail(`Produto ${dto.sku} não existe`);
     }
 
     let cart = await this.cartRepository.findBySessionId(sessionId);
