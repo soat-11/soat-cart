@@ -84,5 +84,6 @@ jobs:
       - name: Implantação no EKS
         run: |
           IMAGE_URI=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY_NAME }}:${{ env.IMAGE_TAG }}
-          kubectl set image deployment/soat-challenge-deployment soat-challenge="$IMAGE_URI"
-          kubectl rollout status deployment/soat-challenge-deployment
+          kubectl get deployments -A
+          kubectl set image deployment/cart cart="$IMAGE_URI"
+          kubectl rollout status deployment/cart
