@@ -12,6 +12,8 @@ import { CartModule } from "@infra/ioc/cart.module";
       synchronize: true,
       autoLoadEntities: true,
       ssl: false,
+      retryAttempts: 10,
+      retryDelay: 3000,
     }),
     CartModule,
   ],
