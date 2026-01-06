@@ -14,11 +14,8 @@ env:
   AWS_REGION: us-east-1
   ECR_REPOSITORY_NAME: soat-challenge-repository
   EKS_CLUSTER_NAME: soat-challenge-eks-cluster
-  # Usa o SHA do commit ou o SHA da cabeça do PR para a tag da imagem
-  IMAGE_TAG: ${{ github.event.pull_request.head.sha || github.sha }}
 
 jobs:
-  # JOB 1: Validação de Qualidade (Roda em PRs e na Main)
   quality_check:
     runs-on: ubuntu-latest
     steps:
@@ -37,7 +34,7 @@ jobs:
       - name: Validar Build (Compilação)
         run: npm run build
 
-      - name: Rodar testes com cobertura (Mínimo 70%)
+      - name: Rodar testes com cobertura
         run: npm run test:cov
         env:
           DB_HOST: localhost
@@ -47,7 +44,6 @@ jobs:
           DB_NAME: test_db
           PORT: 3000
 
-  # JOB 2: Build Docker e Deploy no EKS (Só roda na Main e se o Quality Check passar)
   build_and_deploy:
     needs: quality_check
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -70,20 +66,20 @@ jobs:
 
       - name: Construir e enviar a imagem Docker para o ECR
         run: |
-          IMAGE_URI=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY_NAME }}:${{ env.IMAGE_TAG }}
+          # Simplificado para usar sempre :latest
+          IMAGE_URI=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY_NAME }}:latest
           echo "Building and pushing image: $IMAGE_URI"
           docker build -t $IMAGE_URI .
           docker push $IMAGE_URI
-
-      - name: Instalar o kubectl
-        uses: azure/setup-kubectl@v3
 
       - name: Configurar o kubeconfig para o cluster EKS
         run: aws eks --region ${{ env.AWS_REGION }} update-kubeconfig --name ${{ env.EKS_CLUSTER_NAME }}
 
       - name: Implantação no EKS
         run: |
-          IMAGE_URI=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY_NAME }}:${{ env.IMAGE_TAG }}
-          kubectl get deployments -A
+          IMAGE_URI=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY_NAME }}:latest
+
           kubectl set image deployment/cart-deployment cart="$IMAGE_URI"
+
+          kubectl rollout restart deployment/cart-deployment
           kubectl rollout status deployment/cart-deployment
