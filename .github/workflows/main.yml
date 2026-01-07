@@ -12,7 +12,7 @@ permissions:
 
 env:
   AWS_REGION: us-east-1
-  ECR_REPOSITORY_NAME: soat-challenge-repository
+  ECR_REPOSITORY_NAME: cart
   EKS_CLUSTER_NAME: soat-challenge-eks-cluster
 
 jobs:
