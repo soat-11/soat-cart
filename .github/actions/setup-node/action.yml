@@ -1,19 +1,15 @@
 name: 'Setup Node.js'
-description: 'Setup Node.js with Yarn and cache'
+description: 'Setup Node.js with npm and cache'
 
 runs:
   using: 'composite'
   steps:
-    - name: Enable Corepack
-      shell: bash
-      run: corepack enable
-
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '24'
-        cache: 'yarn'
+        cache: 'npm'
 
     - name: Install dependencies
       shell: bash
-      run: yarn install --frozen-lockfile
+      run: npm ci

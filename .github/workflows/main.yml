@@ -19,10 +19,10 @@ jobs:
         uses: ./.github/actions/setup-node
 
       - name: Lint
-        run: yarn lint
+        run: npm run lint
 
       - name: Type Check
-        run: yarn typecheck
+        run: npm run typecheck
 
   test:
     name: Test
@@ -34,12 +34,10 @@ jobs:
         uses: ./.github/actions/setup-node
 
       - name: Run tests with coverage
-        run: yarn test:cov
+        run: npm run test:cov
         env:
           DB_HOST: localhost
           DB_PORT: 27017
-          DB_USER: admin
-          DB_PASSWORD: password
           DB_NAME: test_db
           PORT: 3000
 
