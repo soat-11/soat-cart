@@ -35,12 +35,12 @@ import { GetCartUseCase } from "@core/use-cases/get-cart.use-case.ts";
 import { RemoveItemFromCartUseCase } from "@core/use-cases/remove-item-from-cart.use-case";
 
 @ApiTags("Cart")
-@Controller("v1/cart")
+@Controller("cart")
 export class CartController {
   constructor(
     private readonly addItemToCartUseCase: AddItemToCartUseCase,
     private readonly getCartUseCase: GetCartUseCase,
-    private readonly removeItemToCartUseCase: RemoveItemFromCartUseCase
+    private readonly removeItemToCartUseCase: RemoveItemFromCartUseCase,
   ) {}
 
   @Patch("items")
@@ -112,7 +112,7 @@ export class CartController {
   public async addOrUpdateItem(
     @Headers("x-session-id") sessionId: string,
     @Body() body: AddItemToCartDto,
-    @Res() res: Response
+    @Res() res: Response,
   ): Promise<Response<CartOutputDto>> {
     const result = await this.addItemToCartUseCase.execute(sessionId, body);
 
@@ -174,7 +174,7 @@ export class CartController {
   })
   public async getCart(
     @Headers("x-session-id") sessionId: string,
-    @Res() res: Response
+    @Res() res: Response,
   ): Promise<Response> {
     const result = await this.getCartUseCase.execute(sessionId);
 
@@ -237,7 +237,7 @@ export class CartController {
   public async removeItemFromCart(
     @Headers("x-session-id") sessionId: string,
     @Param("sku") sku: string,
-    @Res() res: Response
+    @Res() res: Response,
   ): Promise<Response> {
     const result = await this.removeItemToCartUseCase.execute(sessionId, sku);
 
