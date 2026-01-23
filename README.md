@@ -64,6 +64,7 @@ A documentação interativa utiliza a interface **Scalar**, oferecendo uma exper
 ## 🧪 Qualidade de Código e Testes
 
 O projeto exige uma cobertura mínima de **80%**. Utilizamos testes unitários e testes de mutação para validar a eficácia da suite de testes.
+![coverage](image.png)
 
 npm run test (Executar unitários)
 
